@@ -1,6 +1,6 @@
 ---
 - name: Install fortune package on Ubuntu
-  hosts: 10.10.100.12
+  hosts: webservers
   become: yes
 
   tasks:
