@@ -1,20 +1,28 @@
 ---
-- name: Create a firewall policy in Fortinet firewall
-  hosts: fortigates
+- name: Configure firewall policy
+  hosts: fortigate01  # Replace with your actual host or group name
   collections:
     - fortinet.fortios
+  connection: httpapi
+  vars:
+    vdom: "root"
+    ansible_httpapi_use_ssl: yes
+    ansible_httpapi_validate_certs: no
+    ansible_httpapi_port: 7443
+    access_token: "jt6QNmh0Ngny1mmq3yngkbkyHmzbNs"  # Replace with your actual token
+
   tasks:
-    - name: Create firewall policy
-      fortios_firewall_policy:
-        vdom: "root"
-        username: "{{ ansible_user }}"
-        password: "{{ ansible_password }}"
-        state: "present"
-        firewall_policy:
-          policyid: 1
-          name: "Lab-Center to WAN Policy"
+    - name: Create Firewall Policy
+      uri:
+        url: "https://{{ ansible_host }}:{{ ansible_httpapi_port }}/api/v2/cmdb/firewall/policy"
+        method: POST
+        headers:
+          Authorization: "Bearer {{ access_token }}"
+          Content-Type: "application/json"
+        body_format: json
+        body:
           srcintf:
-            - name: "Airowire-Lab-Center (Lab-Center)"
+            - name: "Lab-Center"
           dstintf:
             - name: "virtual-wan-link"
           srcaddr:
@@ -22,7 +30,17 @@
           dstaddr:
             - name: "all"
           action: "deny"
-          schedule: "always"
           service:
             - name: "ALL"
-          nat: "disable"
+          name: "Lab-Center to WAN Policy"
+          status: "enable"
+          schedule: "always"
+          logtraffic: "all"
+          logtraffic_start: "disable"
+        timeout: 60
+        validate_certs: false
+      register: result
+
+    - name: Debug API Response
+      debug:
+        var: result
