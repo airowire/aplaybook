@@ -4,16 +4,6 @@
   become: yes
 
   tasks:
-    - name: Update package cache
-      yum:
-        name: '*'
-        state: latest
-
-    - name: Install epel-release repository
-      yum:
-        name: epel-release
-        state: present
-
     - name: Install fortune package
       yum:
         name: fortune-mod
