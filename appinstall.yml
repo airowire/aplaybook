@@ -1,0 +1,14 @@
+---
+- name: Install fortune package on Ubuntu
+  hosts: Cenots9Server
+  become: yes
+
+  tasks:
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+
+    - name: Install fortune package
+      apt:
+        name: fortune
+        state: present
