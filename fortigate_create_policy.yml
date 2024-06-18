@@ -1,6 +1,6 @@
 ---
 - name: Configure firewall policy
-  hosts: fortigate01  # Replace with your actual host or group name
+  hosts: fortigates  # Replace with your actual host or group name
   collections:
     - fortinet.fortios
   connection: httpapi
