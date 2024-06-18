@@ -1,29 +1,28 @@
 ---
-- name: Create a firewall policy in Fortinet firewall
-  hosts: fortigate
+- name: Example playbook using fortinet.fortios collection
+  hosts: localhost
   collections:
     - fortinet.fortios
-  vars:
-    fortinet_api_key: "sh60Q701pzGGrN4rb6Nz8tbj5spkGr"
   tasks:
-    - name: Create firewall policy
+    - name: Task using a module from fortinet.fortios collection
       fortios_firewall_policy:
-        vdom: "root"  # Adjust if you use a different VDOM
+        vdom: "root"
         access_token: "{{ fortinet_api_key }}"
         state: "present"
         firewall_policy:
-          policyid: 1  # Unique ID for the policy
-          name: "Lab-Center to WAN Policy"  # Name of the policy
-          srcintf:  # Source interface
+          policyid: 1
+          name: "Lab-Center to WAN Policy"
+          srcintf:
             - name: "Airowire-Lab-Center (Lab-Center)"
-          dstintf:  # Destination interface
+          dstintf:
             - name: "virtual-wan-link"
-          srcaddr:  # Source address
+          srcaddr:
             - name: "Windows yogi drl servers"
-          dstaddr:  # Destination address
+          dstaddr:
             - name: "all"
-          action: "deny"  # Action to take
+          action: "deny"
           schedule: "always"
           service:
             - name: "ALL"
           nat: "disable"
+      delegate_to: localhost
