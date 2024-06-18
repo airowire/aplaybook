@@ -1,34 +1,16 @@
 ---
-- name: Install Apache on RHEL 9
+- name: File Module
   hosts: webserver
-  become: yes
-
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
 
   tasks:
-    - name: Ensure the python3-dnf package is installed
-      package:
-        name: python3-dnf
-        state: present
-
-    - name: Install Apache (httpd) package
-      package:
-        name: httpd
-        state: present
-
-    - name: Ensure Apache (httpd) service is enabled and started
-      systemd:
-        name: httpd
-        state: started
-        enabled: yes
-
-    - name: Open HTTP port in the firewall
-      firewalld:
-        port: 80/tcp
-        permanent: yes
-        state: enabled
-
-    - name: Reload firewalld to apply changes
-      command: firewall-cmd --reload
-      become: yes
+  - name: Creating a file
+    file:
+      path: /tmp/newfile.txt
+      state: touch
+      owner: root
+      group: root
+      mode: 777
+  - name: Creating a directory
+    file:
+      path: /tmp/myfolder
+      state: directory
