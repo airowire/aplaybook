@@ -3,18 +3,19 @@
   hosts: webserver
   become: yes
 
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
   tasks:
     - name: Ensure the python3-dnf package is installed
-      dnf:
+      package:
         name: python3-dnf
         state: present
-        use_backend: dnf4
 
     - name: Install Apache (httpd) package
-      dnf:
+      package:
         name: httpd
         state: present
-        use_backend: dnf4
 
     - name: Ensure Apache (httpd) service is enabled and started
       systemd:
