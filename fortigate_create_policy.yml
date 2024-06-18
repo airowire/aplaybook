@@ -1,13 +1,14 @@
 ---
-- name: Example playbook using fortinet.fortios collection
-  hosts: fortigate
+- name: Create a firewall policy in Fortinet firewall
+  hosts: fortigates
   collections:
     - fortinet.fortios
   tasks:
-    - name: Task using a module from fortinet.fortios collection
+    - name: Create firewall policy
       fortios_firewall_policy:
         vdom: "root"
-        access_token: "sh60Q701pzGGrN4rb6Nz8tbj5spkGr"
+        username: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
         state: "present"
         firewall_policy:
           policyid: 1
@@ -25,4 +26,3 @@
           service:
             - name: "ALL"
           nat: "disable"
-      delegate_to: localhost
