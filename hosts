@@ -2,7 +2,7 @@
 node1 ansible_ssh_host=10.10.100.46 ansible_python_interpreter=/usr/bin/python
 
 [fortigates]
-fortigate ansible_host=10.10.100.1 ansible_user="api-admin3" ansible_password="1234"
+fortigate01 ansible_host=10.10.100.1 ansible_user="api-admin3" ansible_password="1234"
 
 [fortigates:vars]
 ansible_network_os=fortinet.fortios.fortios
