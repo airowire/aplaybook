@@ -7,7 +7,7 @@
     - name: Task using a module from fortinet.fortios collection
       fortios_firewall_policy:
         vdom: "root"
-        access_token: "{{ fortinet_api_key }}"
+        access_token: "sh60Q701pzGGrN4rb6Nz8tbj5spkGr"
         state: "present"
         firewall_policy:
           policyid: 1
