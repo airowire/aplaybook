@@ -1,0 +1,28 @@
+---
+- name: Create a firewall policy in Fortinet firewall
+  hosts: localhost
+  collections:
+    - fortinet.fortios
+  tasks:
+    - name: Create firewall policy
+      fortios_firewall_policy:
+        vdom: "root"  # Adjust if you use a different VDOM
+        access_token: "sh60Q701pzGGrN4rb6Nz8tbj5spkGr"
+        state: "present"
+        firewall_policy:
+          policyid: 1  # Unique ID for the policy
+          name: "Lab-Center to WAN Policy"  # Name of the policy
+          srcintf:  # Source interface
+            - name: "Airowire-Lab-Center (Lab-Center)"
+          dstintf:  # Destination interface
+            - name: "virtual-wan-link"
+          srcaddr:  # Source address
+            - name: "Windows yogi drl servers"
+          dstaddr:  # Destination address
+            - name: "all"
+          action: "deny"  # Action to take
+          schedule: "always"
+          service:
+            - name: "ALL"
+          nat: "disable"
+      delegate_to: localhost
