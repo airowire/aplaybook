@@ -1,2 +1,2 @@
 [webserver]
-node1  ansible_python_interpreter=/usr/bin/python
+10.10.100.12
