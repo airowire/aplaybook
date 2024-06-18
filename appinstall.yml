@@ -1,6 +1,6 @@
 ---
 - name: Install fortune package on Ubuntu
-  hosts: Cenots9Server
+  hosts: 10.10.100.52
   become: yes
 
   tasks:
