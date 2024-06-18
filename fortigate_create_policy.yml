@@ -10,7 +10,7 @@
         access_token: "sh60Q701pzGGrN4rb6Nz8tbj5spkGr"
         state: "present"
         firewall_policy:
-          policyid: 1  # Unique ID for the policy
+          policyid: 50  # Unique ID for the policy
           name: "Lab-Center to WAN Policy"  # Name of the policy
           srcintf:  # Source interface
             - name: "Airowire-Lab-Center (Lab-Center)"
