@@ -1,6 +1,6 @@
 ---
 - name: Example playbook using fortinet.fortios collection
-  hosts: localhost
+  hosts: fortigate
   collections:
     - fortinet.fortios
   tasks:
