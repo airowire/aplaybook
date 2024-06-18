@@ -1,19 +1,34 @@
 ---
-# YAML documents begin with the document separator ---
-# The minus in YAML this indicates a list item. The Playbook contains a list
-# of plays, with each play being a dictionary
-
-- name: 'Accessing the facts inside the playbook'
-
-  # Target: where our play will run and options it will run with
+- name: Install Apache on RHEL 9
   hosts: webserver
-  gather_facts: true
+  become: yes
 
-  # Task: the list of tasks that will be executed within the playbook
-  tasks:       
-     - name: Show IP Address
-       debug:
-         msg: "{{ ansible_default_ipv4.address }}"
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
 
-# Three dots indicate the end of a YAML document
-...
+  tasks:
+    - name: Ensure the python3-dnf package is installed
+      package:
+        name: python3-dnf
+        state: present
+
+    - name: Install Apache (httpd) package
+      package:
+        name: httpd
+        state: present
+
+    - name: Ensure Apache (httpd) service is enabled and started
+      systemd:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: Open HTTP port in the firewall
+      firewalld:
+        port: 80/tcp
+        permanent: yes
+        state: enabled
+
+    - name: Reload firewalld to apply changes
+      command: firewall-cmd --reload
+      become: yes
