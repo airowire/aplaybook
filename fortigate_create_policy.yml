@@ -1,6 +1,6 @@
 ---
 - name: Create a firewall policy in Fortinet firewall
-  hosts: localhost
+  hosts: fortigate
   collections:
     - fortinet.fortios
   tasks:
