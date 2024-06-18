@@ -1,2 +1,2 @@
-[all]
+[webserver]
 ansnode1 ansible_ssh_host=10.10.100.12 ansible_python_interpreter=/usr/bin/python
