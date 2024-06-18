@@ -4,6 +4,11 @@
   become: yes
 
   tasks:
+    - name: Install epel-release repository
+      dnf:
+        name: epel-release
+        state: present
+
     - name: Install fortune package
       dnf:
         name: fortune-mod
