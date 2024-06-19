@@ -1,8 +1,6 @@
 ---
 - name: Configure firewall policy
   hosts: fortigate
-  collections:
-    - fortinet.fortios
   connection: httpapi
   gather_facts: no
   vars:
