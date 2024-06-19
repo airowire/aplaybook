@@ -4,6 +4,7 @@
   connection: httpapi
   gather_facts: no
   vars:
+    ansible_network_os: fortinet.fortios.fortios  # Specify the correct network OS here
     access_token: "jt6QNmh0Ngny1mmq3yngkbkyHmzbNs"  # Replace with your actual token
   tasks:
     - name: Create Firewall Policy
