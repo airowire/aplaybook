@@ -10,6 +10,7 @@
     ansible_httpapi_validate_certs: no
     ansible_httpapi_port: 7443
     access_token: "jt6QNmh0Ngny1mmq3yngkbkyHmzbNs"  # Replace with your actual token
+    ansible_network_os=fortinet.fortios.fortios
 
 
   tasks:
