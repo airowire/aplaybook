@@ -1,6 +1,7 @@
 ---
 - name: Configure firewall policy
-  hosts: fortigates  # Replace with your actual host or group name
+  hosts: fortigates
+  gather_facts: false
   collections:
     - fortinet.fortios
   connection: httpapi
@@ -9,7 +10,7 @@
     ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: no
     ansible_httpapi_port: 7443
-    access_token: "jt6QNmh0Ngny1mmq3yngkbkyHmzbNs"  # Replace with your actual token
+    access_token: "jt6QNmh0Ngny1mmq3yngkbkyHmzbNs"
 
   tasks:
     - name: Create Firewall Policy
