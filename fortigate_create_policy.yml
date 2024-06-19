@@ -1,43 +1,34 @@
----
 - name: Configure firewall policy
-  hosts: fortigate01
-  gather_facts: false
+  hosts: fortigate
+  collections:
+    - fortinet.fortios
   connection: httpapi
+  gather_facts: no
   vars:
     vdom: "root"
     ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: no
     ansible_httpapi_port: 7443
-    access_token: "jt6QNmh0Ngny1mmq3yngkbkyHmzbNs"
+    access_token: "jt6QNmh0Ngny1mmq3yngkbkyHmzbNs"  # Replace with your actual token
+
 
   tasks:
     - name: Create Firewall Policy
-      uri:
-        url: "https://{{ ansible_host }}:{{ ansible_httpapi_port }}/api/v2/cmdb/firewall/policy"
-        method: POST
-        headers:
-          Authorization: "Bearer {{ access_token }}"
-          Content-Type: "application/json"
-        body_format: json
-        body:
-          srcintf:
-            - name: "Lab-Center"
-          dstintf:
-            - name: "virtual-wan-link"
-          srcaddr:
-            - name: "Windows yogi drl servers"
-          dstaddr:
-            - name: "all"
+      fortios_firewall_policy:
+        vdom: "{{ vdom }}"
+        access_token: "{{ access_token }}"
+        state: "present"
+        firewall_policy:
+          policyid: 53  # Ensure policyid is unique and correctly specified
+          name: "Ansible Created 1  Lab-Center to WAN Policy"
+          srcintf: [{"name": "Lab-Center"}]
+          dstintf: [{"name": "virtual-wan-link"}]
+          srcaddr: [{"name": "Windows yogi drl servers"}]
+          dstaddr: [{"name": "all"}]
           action: "deny"
-          service:
-            - name: "ALL"
-          name: "Lab-Center to WAN Policy"
-          status: "enable"
           schedule: "always"
+          service: [{"name": "ALL"}]
           logtraffic: "all"
-          logtraffic_start: "disable"
-        timeout: 60
-        validate_certs: false
       register: result
 
     - name: Debug API Response
