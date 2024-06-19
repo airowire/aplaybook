@@ -1,3 +1,4 @@
+---
 - name: Configure firewall policy
   hosts: fortigate
   collections:
@@ -10,8 +11,7 @@
     ansible_httpapi_validate_certs: no
     ansible_httpapi_port: 7443
     access_token: "jt6QNmh0Ngny1mmq3yngkbkyHmzbNs"  # Replace with your actual token
-    ansible_network_os=fortinet.fortios.fortios
-
+    ansible_network_os: fortinet.fortios.fortios  # Ensure correct syntax with ":" instead of "="
 
   tasks:
     - name: Create Firewall Policy
@@ -21,7 +21,7 @@
         state: "present"
         firewall_policy:
           policyid: 53  # Ensure policyid is unique and correctly specified
-          name: "Ansible Created 1  Lab-Center to WAN Policy"
+          name: "Ansible Created 1 Lab-Center to WAN Policy"
           srcintf: [{"name": "Lab-Center"}]
           dstintf: [{"name": "virtual-wan-link"}]
           srcaddr: [{"name": "Windows yogi drl servers"}]
