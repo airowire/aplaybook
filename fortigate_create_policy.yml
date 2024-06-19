@@ -1,9 +1,10 @@
 ---
 - name: Configure firewall policy
-  hosts: all
+  hosts: fortigate
   connection: httpapi
   gather_facts: no
   vars:
+    ansible_network_os: fortinet.fortios.fortios  # Explicitly set network OS here
     vdom: "root"
     ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: no
@@ -12,7 +13,7 @@
 
   tasks:
     - name: Create Firewall Policy
-      fortios_firewall_policy:
+      fortinet.fortios.fortios_firewall_policy:
         vdom: "{{ vdom }}"
         access_token: "{{ access_token }}"
         state: "present"
