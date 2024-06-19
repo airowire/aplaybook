@@ -1,7 +1,7 @@
 - name: Configure firewall policy
   hosts: fortigate
   connection: httpapi
-  gather_facts: yes
+  gather_facts: no
   vars:
     vdom: "root"
     ansible_httpapi_use_ssl: yes
@@ -18,7 +18,7 @@
         state: "present"
         firewall_policy:
           policyid: 53  # Ensure policyid is unique and correctly specified
-          name: "Ansible Created 1  Lab-Center to WAN Policy"
+          name: "Ansible Tower created  Lab-Center to WAN Policy"
           srcintf: [{"name": "Lab-Center"}]
           dstintf: [{"name": "virtual-wan-link"}]
           srcaddr: [{"name": "Windows yogi drl servers"}]
