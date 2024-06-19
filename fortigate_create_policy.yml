@@ -3,6 +3,8 @@
   hosts: fortigate
   connection: httpapi
   gather_facts: no
+  vars:
+    access_token: "jt6QNmh0Ngny1mmq3yngkbkyHmzbNs"  # Replace with your actual token
   tasks:
     - name: Create Firewall Policy
       fortios_firewall_policy:
