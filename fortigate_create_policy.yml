@@ -4,15 +4,16 @@
   connection: httpapi
   gather_facts: no
   vars:
+    ansible_network_os: fortinet.fortios.fortios
     vdom: "root"
     ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: no
     ansible_httpapi_port: 7443
-    access_token: "jt6QNmh0Ngny1mmq3yngkbkyHmzbNs"  # Replace with your actual token
+    access_token: "your_access_token_here"  # Replace with your actual token
 
   tasks:
     - name: Create Firewall Policy
-      fortios_firewall_policy:
+      fortinet.fortios.fortios.fortios_firewall_policy:
         vdom: "{{ vdom }}"
         access_token: "{{ access_token }}"
         state: "present"
