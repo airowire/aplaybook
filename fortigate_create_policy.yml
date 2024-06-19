@@ -1,7 +1,5 @@
 - name: Configure firewall policy
   hosts: fortigate
-  collections:
-    - fortinet.fortios
   connection: httpapi
   gather_facts: yes
   vars:
@@ -14,7 +12,7 @@
 
   tasks:
     - name: Create Firewall Policy
-      fortios_firewall_policy:
+      fortinet.fortios.fortios_firewall_policy:
         vdom: "{{ vdom }}"
         access_token: "{{ access_token }}"
         state: "present"
