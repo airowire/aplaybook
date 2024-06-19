@@ -1,6 +1,6 @@
 ---
 - name: Configure firewall policy
-  hosts: fortigate
+  hosts: all
   connection: httpapi
   gather_facts: no
   vars:
