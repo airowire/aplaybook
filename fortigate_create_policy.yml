@@ -1,6 +1,6 @@
 ---
 - name: Configure firewall policy
-  hosts: fortigates
+  hosts: fortigate01
   gather_facts: false
   collections:
     - fortinet.fortios
