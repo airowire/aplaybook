@@ -2,8 +2,6 @@
 - name: Configure firewall policy
   hosts: fortigate01
   gather_facts: false
-  collections:
-    - fortinet.fortios
   connection: httpapi
   vars:
     vdom: "root"
