@@ -14,7 +14,7 @@
 
   tasks:
     - name: Create Firewall Policy
-      fortios_firewall_policy:
+      fortinet.fortios.fortios_firewall_policy:
         vdom: "{{ vdom }}"
         access_token: "{{ access_token }}"
         state: "present"
