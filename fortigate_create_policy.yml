@@ -1,5 +1,5 @@
 - name: Configure firewall policy
-  hosts: all
+  hosts: fortigate
   collections:
     - fortinet.fortios
   connection: httpapi
