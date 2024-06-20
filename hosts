@@ -1,4 +1,4 @@
 [all]
-f1 ansible_host=10.10.100.1 ansible_user="api-admin3" ansible_password="1234"  ansible_network_os=fortinet.fortios.fortios
+f1 ansible_host=10.10.90.4 ansible_user="api-admin3" ansible_password="1234"  ansible_network_os=fortinet.fortios.fortios
 
 
