@@ -1,4 +1,3 @@
----
 - name: Configure firewall policy
   hosts: fortigate
   collections:
