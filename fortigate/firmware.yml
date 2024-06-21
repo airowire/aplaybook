@@ -12,11 +12,11 @@
   tasks:
     - name: Perform firmware upgrade from FortiGuard
       fortios_system_firmware_upgrade:
-        vdom:  "{{ vdom }}"
+        vdom: "{{ vdom }}"
         ssl_verify: "False"
         system_firmware:
           filename: "FGT_40F-v7.4.1.F-build2463-FORTINET.out"
-          format_partition: "False"
+          format_partition: "false"
           source: "fortiguard"
       register: fortios_system_firmware_upgrade_result
 
