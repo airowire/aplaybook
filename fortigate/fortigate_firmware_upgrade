@@ -16,8 +16,8 @@
         vdom:  "{{ vdom }}"
         ssl_verify: "False"
         system_firmware:
-          filename: "{{ firmware_filename }}"
-          format_partition: "{{ firmware_format_partition }}"
+          filename: "FGT_40F-v7.4.1.F-build2463-FORTINET.out"
+          format_partition: "False"
           source: "fortiguard"
       register: fortios_system_firmware_upgrade_result
 
