@@ -16,9 +16,9 @@
         state: "present"
         firewall_policy:
           policyid: 3
-          name: "Testing Policy"
+          name: "Ansile Lan - Lan Policy"
           srcintf: [{"name": "lan"}]
-          dstintf: [{"name": "wan"}]
+          dstintf: [{"name": "lan"}]
           srcaddr: [{"name": "all"}]
           dstaddr: [{"name": "all"}]
           action: "accept"
