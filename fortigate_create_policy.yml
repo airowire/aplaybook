@@ -27,7 +27,7 @@
           schedule: "always"
           service: [{"name": "ALL"}]
           logtraffic: "all"
-      timeout: 60
+      timeout: 30
       register: result
 
     - name: Debug API Response
