@@ -1,13 +1,14 @@
 - name: Configure firewall policy
-  hosts: fortigate
+  hosts: all
   collections:
     - fortinet.fortios
   connection: httpapi
   vars:
     vdom: "root"
-    ansible_httpapi_use_ssl: no
+    ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: no
-    ansible_httpapi_port: 80
+    ansible_httpapi_port: 8443
+    ansible_command_timeout: 60
 
   tasks:
     - name: Configure Global attributes
@@ -15,4 +16,4 @@
         vdom: "{{ vdom }}"
         system_global:
           admintimeout: "60"
-          hostname: "Yogi_Firewall"
+          hostname: "YogiAirowire"
