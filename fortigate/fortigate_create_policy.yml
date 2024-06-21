@@ -7,14 +7,12 @@
     vdom: "root"
     ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: no
-    ansible_httpapi_port: 7443
-    access_token: "0H1jG85w4QtNH6sfGtQghb6dpxfm9s"
+    ansible_httpapi_port: 8443
 
   tasks:
     - name: Create Firewall Policy
       fortios_firewall_policy:
         vdom: "{{ vdom }}"
-        access_token: "{{ access_token }}"
         state: "present"
         firewall_policy:
           policyid: 3
