@@ -8,7 +8,7 @@
     ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: no
     ansible_httpapi_port: 8443
-    access_token: "jt6QNmh0Ngny1mmq3yngkbkyHmzbNs"  # Replace with your actual token
+    access_token: "0H1jG85w4QtNH6sfGtQghb6dpxfm9s"
 
   tasks:
     - name: Create Firewall Policy
