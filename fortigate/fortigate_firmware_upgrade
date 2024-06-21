@@ -1,0 +1,26 @@
+---
+- name: Perform firmware upgrade from FortiGuard
+  hosts: all
+  connection: httpapi
+  gather_facts: no
+  collections:
+    - fortinet.fortios
+  vars:
+    vdom: "root"
+    ansible_httpapi_use_ssl: yes
+    ansible_httpapi_validate_certs: no
+    ansible_httpapi_port: 8443
+  tasks:
+    - name: Perform firmware upgrade from FortiGuard
+      fortios_system_firmware_upgrade:
+        vdom:  "{{ vdom }}"
+        ssl_verify: "False"
+        system_firmware:
+          filename: "{{ firmware_filename }}"
+          format_partition: "{{ firmware_format_partition }}"
+          source: "fortiguard"
+      register: fortios_system_firmware_upgrade_result
+
+    - name: Display firmware upgrade result
+      debug:
+        var: fortios_system_firmware_upgrade_result
