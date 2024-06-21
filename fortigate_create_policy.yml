@@ -7,7 +7,7 @@
     vdom: "root"
     ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: no
-    ansible_httpapi_port: 8443
+    ansible_httpapi_port: 7443
     access_token: "0H1jG85w4QtNH6sfGtQghb6dpxfm9s"
 
   tasks:
