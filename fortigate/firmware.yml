@@ -11,7 +11,7 @@
     firmware_image_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"
   tasks:
     - name: Upload firmware to FortiGate
-      fortinet.fortios.fortios_system_firmware:
+      fortios_system_firmware:
         vdom: "{{ vdom }}"
         access_token: "{{ fortios_access_token }}"
         state: present
@@ -24,7 +24,7 @@
       when: firmware_upload_result is defined
 
     - name: Initiate firmware upgrade
-      fortinet.fortios.fortios_system_firmware:
+      fortios_system_firmware:
         vdom: "{{ vdom }}"
         access_token: "{{ fortios_access_token }}"
         state: upgrade
@@ -37,7 +37,7 @@
       when: firmware_upgrade_result is defined
 
     - name: Reboot FortiGate to complete firmware upgrade
-      fortinet.fortios.fortios_system_reboot:
+      fortios_system_reboot:
         vdom: "{{ vdom }}"
         access_token: "{{ fortios_access_token }}"
         state: reboot
