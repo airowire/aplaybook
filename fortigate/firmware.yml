@@ -8,16 +8,21 @@
     ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: no
     ansible_httpapi_port: 8443
-    access_token: "w6b4Nqx38bxfdj8Q4p7g331p4ww960"  
-    firmware_image_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out" 
+    access_token: "w6b4Nqx38bxfdj8Q4p7g331p4ww960"  # Define your access token here
+    firmware_image_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"  # Path to firmware image
   tasks:
+    - name: Read firmware image content
+      slurp:
+        src: "{{ firmware_image_path }}"
+      register: firmware_image
+
     - name: Upgrade firmware on FortiGate
       fortinet.fortios.fortios_monitor:
         vdom: "{{ vdom }}"
         access_token: "{{ access_token }}"
         selector: 'upgrade.system.firmware'
         params:
-          filename: "{{ firmware_image_path }}"
+          file_content: "{{ firmware_image.content | b64decode }}"
       register: firmware_upgrade_result
 
     - name: Show firmware upgrade result
