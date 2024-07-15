@@ -16,4 +16,4 @@
         vdom: "{{ vdom }}"
         system_global:
           admintimeout: "60"
-          hostname: "YogiAirowire"
+          hostname: "Abhishekairowire"
