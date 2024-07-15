@@ -16,7 +16,7 @@
         state: "present"
         firewall_policy:
           policyid: 3
-          name: "Ansile Lan - Lan Policy"
+          name: "abhihsek policy"
           srcintf: [{"name": "lan"}]
           dstintf: [{"name": "lan"}]
           srcaddr: [{"name": "all"}]
