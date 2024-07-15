@@ -8,9 +8,9 @@
     ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: no
     ansible_httpapi_port: 8443
-    access_token: "w6b4Nqx38bxfdj8Q4p7g331p4ww960"  # Define your access token here
-    firmware_image_path: "/home/yogesh/FGT_40F-v7.4.1.F-build2463-FORTINET.out"  # Local path to firmware image
-    remote_firmware_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"  # Path to remote firmware image
+    access_token: "w6b4Nqx38bxfdj8Q4p7g331p4ww960"
+    firmware_image_path: "/home/yogesh/FGT_40F-v7.4.1.F-build2463-FORTINET.out"  # Update this path
+    remote_firmware_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"
   tasks:
     - name: Verify firmware image exists on the controller
       stat:
