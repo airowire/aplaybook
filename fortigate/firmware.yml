@@ -1,7 +1,7 @@
 - name: Manage FortiGate Device
   hosts: all
   collections:
-    - fortinet.fortios_monitor
+    - fortinet.fortios
   connection: httpapi
   vars:
     vdom: "root"
@@ -12,7 +12,7 @@
     firmware_image_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"  # Path to firmware image
   tasks:
     - name: Upload firmware to FortiGate
-      fortinet.fortios_monitor:
+      fortinet.fortios.fortios_monitor:
         vdom: "{{ vdom }}"
         access_token: "{{ access_token }}"
         selector: 'firmware.upload'
@@ -26,7 +26,7 @@
       when: firmware_upload_result is defined
 
     - name: Initiate firmware upgrade
-      fortinet.fortios_monitor:
+      fortinet.fortios.fortios_monitor:
         vdom: "{{ vdom }}"
         access_token: "{{ access_token }}"
         selector: 'firmware.upgrade'
@@ -40,7 +40,7 @@
       when: firmware_upgrade_result is defined
 
     - name: Activate FortiToken
-      fortinet.fortios_monitor:
+      fortinet.fortios.fortios_monitor:
         vdom: "{{ vdom }}"
         access_token: "{{ access_token }}"
         selector: 'activate.user.fortitoken'
@@ -54,7 +54,7 @@
       when: fortitoken_result is defined
 
     - name: Reboot This Device
-      fortinet.fortios_monitor:
+      fortinet.fortios.fortios_monitor.fortios_monitor:
         vdom: "{{ vdom }}"
         access_token: "{{ access_token }}"
         selector: 'system.reboot'
