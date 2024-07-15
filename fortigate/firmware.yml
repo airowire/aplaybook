@@ -9,26 +9,36 @@
     ansible_httpapi_validate_certs: no
     ansible_httpapi_port: 8443
     access_token: "w6b4Nqx38bxfdj8Q4p7g331p4ww960"  # Define your access token here
-    firmware_image_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"  # Path to local firmware image
+    firmware_image_path: "./FGT_40F-v7.4.1.F-build2463-FORTINET.out"  # Local path to firmware image
     remote_firmware_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"  # Path to remote firmware image
   tasks:
+    - name: Verify firmware image exists on the controller
+      stat:
+        path: "{{ firmware_image_path }}"
+      register: local_stat_result
+
+    - name: Fail if firmware image does not exist on the controller
+      fail:
+        msg: "Firmware image does not exist on the Ansible controller."
+      when: not local_stat_result.stat.exists
+
     - name: Copy firmware image to remote host
       copy:
         src: "{{ firmware_image_path }}"
         dest: "{{ remote_firmware_path }}"
       register: copy_result
 
-    - name: Verify firmware image is copied
+    - name: Verify firmware image is copied to remote host
       stat:
         path: "{{ remote_firmware_path }}"
       register: stat_result
 
-    - name: Fail if firmware image is not copied
+    - name: Fail if firmware image is not copied to remote host
       fail:
-        msg: "Firmware image was not copied to remote host."
+        msg: "Firmware image was not copied to the remote host."
       when: not stat_result.stat.exists
 
-    - name: Read firmware image content
+    - name: Read firmware image content from remote host
       slurp:
         src: "{{ remote_firmware_path }}"
       register: firmware_image
@@ -47,7 +57,7 @@
         msg: "Firmware upgrade result: {{ firmware_upgrade_result }}"
       when: firmware_upgrade_result is defined
 
-    - name: Reboot This Device
+    - name: Reboot Device
       fortinet.fortios.fortios_monitor:
         vdom: "{{ vdom }}"
         access_token: "{{ access_token }}"
