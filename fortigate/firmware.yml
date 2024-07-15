@@ -8,12 +8,29 @@
     ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: no
     ansible_httpapi_port: 8443
-    access_token: "w6b4Nqx38bxfdj8Q4p7g331p4ww960"  # Define your access token here
-    firmware_image_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"  # Path to firmware image
+    access_token: "{{ fortios_access_token }}"  # Define your access token here
+    firmware_image_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"  # Path to local firmware image
+    remote_firmware_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"  # Path to remote firmware image
   tasks:
+    - name: Copy firmware image to remote host
+      copy:
+        src: "{{ firmware_image_path }}"
+        dest: "{{ remote_firmware_path }}"
+      register: copy_result
+
+    - name: Verify firmware image is copied
+      stat:
+        path: "{{ remote_firmware_path }}"
+      register: stat_result
+
+    - name: Fail if firmware image is not copied
+      fail:
+        msg: "Firmware image was not copied to remote host."
+      when: not stat_result.stat.exists
+
     - name: Read firmware image content
       slurp:
-        src: "{{ firmware_image_path }}"
+        src: "{{ remote_firmware_path }}"
       register: firmware_image
 
     - name: Upgrade firmware on FortiGate
