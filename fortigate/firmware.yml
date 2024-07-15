@@ -1,25 +1,49 @@
----
-- name: Perform firmware upgrade from FortiGuard
+- name: upgrade firmware
   hosts: all
-  connection: httpapi
   collections:
     - fortinet.fortios
+  connection: httpapi
   vars:
     vdom: "root"
     ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: no
     ansible_httpapi_port: 8443
+    firmware_image_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"
   tasks:
-    - name: Perform firmware upgrade from FortiGuard
-      fortios_system_firmware_upgrade:
+    - name: Upload firmware to FortiGate
+      fortinet.fortios.fortios_system_firmware:
         vdom: "{{ vdom }}"
-        ssl_verify: "False"
-        system_firmware:
-          filename: "FGT_40F-v7.4.1.F-build2463-FORTINET.out"
-          format_partition: "false"
-          source: "fortiguard"
-      register: fortios_system_firmware_upgrade_result
+        access_token: "{{ fortios_access_token }}"
+        state: present
+        firmware_image: "{{ firmware_image_path }}"
+      register: firmware_upload_result
 
-    - name: Display firmware upgrade result
+    - name: Check if firmware upload was successful
       debug:
-        var: fortios_system_firmware_upgrade_result
+        msg: "Firmware upload result: {{ firmware_upload_result }}"
+      when: firmware_upload_result is defined
+
+    - name: Initiate firmware upgrade
+      fortinet.fortios.fortios_system_firmware:
+        vdom: "{{ vdom }}"
+        access_token: "{{ fortios_access_token }}"
+        state: upgrade
+        firmware_image: "{{ firmware_image_path }}"
+      register: firmware_upgrade_result
+
+    - name: Check if firmware upgrade was successful
+      debug:
+        msg: "Firmware upgrade result: {{ firmware_upgrade_result }}"
+      when: firmware_upgrade_result is defined
+
+    - name: Reboot FortiGate to complete firmware upgrade
+      fortinet.fortios.fortios_system_reboot:
+        vdom: "{{ vdom }}"
+        access_token: "{{ fortios_access_token }}"
+        state: reboot
+      register: reboot_result
+
+    - name: Check if reboot was successful
+      debug:
+        msg: "Reboot result: {{ reboot_result }}"
+      when: reboot_result is defined
