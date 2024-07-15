@@ -1,4 +1,4 @@
-- name: upgrade firmware
+- name: Manage FortiGate Device
   hosts: all
   collections:
     - fortinet.fortios
@@ -8,42 +8,61 @@
     ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: no
     ansible_httpapi_port: 8443
-    firmware_image_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"
+    access_token: "w6b4Nqx38bxfdj8Q4p7g331p4ww960" 
+    firmware_image_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out" 
   tasks:
     - name: Upload firmware to FortiGate
-      fortios_system_firmware:
+      fortinet.fortios.fortios_monitor:
         vdom: "{{ vdom }}"
-        access_token: "{{ fortios_access_token }}"
-        state: present
-        firmware_image: "{{ firmware_image_path }}"
+        access_token: "{{ access_token }}"
+        selector: 'upload.system.firmware'
+        params:
+          firmware_image: "{{ firmware_image_path }}"
       register: firmware_upload_result
 
-    - name: Check if firmware upload was successful
+    - name: Show firmware upload result
       debug:
         msg: "Firmware upload result: {{ firmware_upload_result }}"
       when: firmware_upload_result is defined
 
     - name: Initiate firmware upgrade
-      fortios_system_firmware:
+      fortinet.fortios.fortios_monitor:
         vdom: "{{ vdom }}"
-        access_token: "{{ fortios_access_token }}"
-        state: upgrade
-        firmware_image: "{{ firmware_image_path }}"
+        access_token: "{{ access_token }}"
+        selector: 'upgrade.system.firmware'
+        params:
+          firmware_image: "{{ firmware_image_path }}"
       register: firmware_upgrade_result
 
-    - name: Check if firmware upgrade was successful
+    - name: Show firmware upgrade result
       debug:
         msg: "Firmware upgrade result: {{ firmware_upgrade_result }}"
       when: firmware_upgrade_result is defined
 
-    - name: Reboot FortiGate to complete firmware upgrade
-      fortios_system_reboot:
+    - name: Activate FortiToken
+      fortinet.fortios.fortios_monitor:
         vdom: "{{ vdom }}"
-        access_token: "{{ fortios_access_token }}"
-        state: reboot
+        access_token: "{{ access_token }}"
+        selector: 'activate.user.fortitoken'
+        params:
+          tokens: '<token string>'  # Replace with your actual token string
+      register: fortitoken_result
+
+    - name: Show FortiToken activation result
+      debug:
+        msg: "FortiToken activation result: {{ fortitoken_result }}"
+      when: fortitoken_result is defined
+
+    - name: Reboot This Device
+      fortinet.fortios.fortios_monitor:
+        vdom: "{{ vdom }}"
+        access_token: "{{ access_token }}"
+        selector: 'reboot.system.os'
+        params:
+          event_log_message: 'Reboot Request From Ansible'
       register: reboot_result
 
-    - name: Check if reboot was successful
+    - name: Show reboot result
       debug:
         msg: "Reboot result: {{ reboot_result }}"
       when: reboot_result is defined
