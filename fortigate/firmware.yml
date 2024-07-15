@@ -8,65 +8,14 @@
     ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: no
     ansible_httpapi_port: 8443
+    ansible_httpapi_timeout: 120
     access_token: "w6b4Nqx38bxfdj8Q4p7g331p4ww960"
-    firmware_image_path: "/home/yogesh/FGT_40F-v7.4.1.F-build2463-FORTINET.out"  # Update this path
-    remote_firmware_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"
   tasks:
-    - name: Verify firmware image exists on the controller
-      stat:
-        path: "{{ firmware_image_path }}"
-      register: local_stat_result
-
-    - name: Fail if firmware image does not exist on the controller
-      fail:
-        msg: "Firmware image does not exist on the Ansible controller."
-      when: not local_stat_result.stat.exists
-
-    - name: Copy firmware image to remote host
-      copy:
-        src: "{{ firmware_image_path }}"
-        dest: "{{ remote_firmware_path }}"
-      register: copy_result
-
-    - name: Verify firmware image is copied to remote host
-      stat:
-        path: "{{ remote_firmware_path }}"
-      register: stat_result
-
-    - name: Fail if firmware image is not copied to remote host
-      fail:
-        msg: "Firmware image was not copied to the remote host."
-      when: not stat_result.stat.exists
-
-    - name: Read firmware image content from remote host
-      slurp:
-        src: "{{ remote_firmware_path }}"
-      register: firmware_image
-
-    - name: Upgrade firmware on FortiGate
-      fortinet.fortios.fortios_monitor:
-        vdom: "{{ vdom }}"
-        access_token: "{{ access_token }}"
-        selector: 'upgrade.system.firmware'
-        params:
-          file_content: "{{ firmware_image.content | b64decode }}"
-      register: firmware_upgrade_result
-
-    - name: Show firmware upgrade result
-      debug:
-        msg: "Firmware upgrade result: {{ firmware_upgrade_result }}"
-      when: firmware_upgrade_result is defined
-
-    - name: Reboot Device
-      fortinet.fortios.fortios_monitor:
-        vdom: "{{ vdom }}"
-        access_token: "{{ access_token }}"
-        selector: 'reboot.system.os'
-        params:
-          event_log_message: 'Reboot Request From Ansible'
-      register: reboot_result
-
-    - name: Show reboot result
-      debug:
-        msg: "Reboot result: {{ reboot_result }}"
-      when: reboot_result is defined
+  - name: Update Firmware
+    fortios_monitor:
+      vdom: "{{ vdom }}"
+      selector: 'upgrade.system.firmware'
+      params:
+        source: "upload"
+        filename: "FGT_40F-v7.4.1.F-build2463-FORTINET.out"
+        file_content: "{{ lookup( 'file', '/home/yogesh/FGT_40F-v7.4.1.F-build2463-FORTINET.out') | string | b64encode }}"
