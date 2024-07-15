@@ -12,12 +12,12 @@
     firmware_image_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"  # Path to firmware image
   tasks:
     - name: Upload firmware to FortiGate
-      fortinet.fortios.fortios_monitor:
+      fortinet.fortios_monitor:
         vdom: "{{ vdom }}"
         access_token: "{{ access_token }}"
-        selector: 'firmware.upload'
+        selector: 'upload.system.firmware'
         params:
-          firmware_image: "{{ firmware_image_path }}"
+          filename: "{{ firmware_image_path }}"
       register: firmware_upload_result
 
     - name: Show firmware upload result
@@ -26,12 +26,12 @@
       when: firmware_upload_result is defined
 
     - name: Initiate firmware upgrade
-      fortinet.fortios.fortios_monitor:
+      fortinet.fortios_monitor:
         vdom: "{{ vdom }}"
         access_token: "{{ access_token }}"
-        selector: 'firmware.upgrade'
+        selector: 'install.system.firmware'
         params:
-          firmware_image: "{{ firmware_image_path }}"
+          filename: "{{ firmware_image_path }}"
       register: firmware_upgrade_result
 
     - name: Show firmware upgrade result
@@ -40,7 +40,7 @@
       when: firmware_upgrade_result is defined
 
     - name: Activate FortiToken
-      fortinet.fortios.fortios_monitor:
+      fortinet.fortios_monitor:
         vdom: "{{ vdom }}"
         access_token: "{{ access_token }}"
         selector: 'activate.user.fortitoken'
@@ -54,10 +54,10 @@
       when: fortitoken_result is defined
 
     - name: Reboot This Device
-      fortinet.fortios.fortios_monitor.fortios_monitor:
+      fortinet.fortios_monitor:
         vdom: "{{ vdom }}"
         access_token: "{{ access_token }}"
-        selector: 'system.reboot'
+        selector: 'reboot.system'
         params:
           event_log_message: 'Reboot Request From Ansible'
       register: reboot_result
