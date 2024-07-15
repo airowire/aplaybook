@@ -8,28 +8,14 @@
     ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: no
     ansible_httpapi_port: 8443
-    access_token: "w6b4Nqx38bxfdj8Q4p7g331p4ww960"  # Define your access token here
-    firmware_image_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"  # Path to firmware image
+    access_token: "w6b4Nqx38bxfdj8Q4p7g331p4ww960"  
+    firmware_image_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out" 
   tasks:
-    - name: Upload firmware to FortiGate
+    - name: Upgrade firmware on FortiGate
       fortinet.fortios.fortios_monitor:
         vdom: "{{ vdom }}"
         access_token: "{{ access_token }}"
-        selector: 'upload.system.firmware'
-        params:
-          filename: "{{ firmware_image_path }}"
-      register: firmware_upload_result
-
-    - name: Show firmware upload result
-      debug:
-        msg: "Firmware upload result: {{ firmware_upload_result }}"
-      when: firmware_upload_result is defined
-
-    - name: Initiate firmware upgrade
-      fortinet.fortios.fortios_monitor:
-        vdom: "{{ vdom }}"
-        access_token: "{{ access_token }}"
-        selector: 'install.system.firmware'
+        selector: 'upgrade.system.firmware'
         params:
           filename: "{{ firmware_image_path }}"
       register: firmware_upgrade_result
@@ -38,11 +24,12 @@
       debug:
         msg: "Firmware upgrade result: {{ firmware_upgrade_result }}"
       when: firmware_upgrade_result is defined
+
     - name: Reboot This Device
       fortinet.fortios.fortios_monitor:
         vdom: "{{ vdom }}"
         access_token: "{{ access_token }}"
-        selector: 'reboot.system'
+        selector: 'reboot.system.os'
         params:
           event_log_message: 'Reboot Request From Ansible'
       register: reboot_result
