@@ -1,8 +1,8 @@
 - name: Manage FortiGate Device
-  hosts: all
+  hosts: localhost
   collections:
     - fortinet.fortios
-  connection: httpapi
+  connection: local
   vars:
     vdom: "root"
     ansible_httpapi_use_ssl: yes
@@ -10,26 +10,31 @@
     ansible_httpapi_port: 8443
     ansible_httpapi_timeout: 120
     access_token: "w6b4Nqx38bxfdj8Q4p7g331p4ww960"
+    firmware_file_path: "/home/yogesh/FGT_40F-v7.4.1.F-build2463-FORTINET.out"
   tasks:
   - name: Display Variables
     debug:
       msg: 
         vdom: "{{ vdom }}"
         access_token: "{{ access_token }}"
+        firmware_file_path: "{{ firmware_file_path }}"
 
-  - name: Ensure firmware file is present
+  - name: Ensure firmware file is present on the controller
     stat:
-      path: "/home/yogesh/FGT_40F-v7.4.1.F-build2463-FORTINET.out"
+      path: "{{ firmware_file_path }}"
     register: firmware_file
+    delegate_to: localhost
 
-  - name: Fail if firmware file is not present
+  - name: Fail if firmware file is not present on the controller
     fail:
-      msg: "Firmware file not found at /home/yogesh/FGT_40F-v7.4.1.F-build2463-FORTINET.out"
+      msg: "Firmware file not found at {{ firmware_file_path }}"
     when: not firmware_file.stat.exists
 
-  - name: Check File Content
-    debug:
-      msg: "{{ lookup( 'file', '/home/yogesh/FGT_40F-v7.4.1.F-build2463-FORTINET.out') | string | b64encode }}"
+  - name: Copy firmware file to target host
+    copy:
+      src: "{{ firmware_file_path }}"
+      dest: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"
+    delegate_to: localhost
 
   - name: Update Firmware
     fortios_monitor:
@@ -38,7 +43,7 @@
       params:
         source: "upload"
         filename: "FGT_40F-v7.4.1.F-build2463-FORTINET.out"
-        file_content: "{{ lookup( 'file', '/home/yogesh/FGT_40F-v7.4.1.F-build2463-FORTINET.out') | string | b64encode }}"
+        file_content: "{{ lookup('file', '/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out') | string | b64encode }}"
     register: firmware_update_result
 
   - name: Display Firmware Update Result
