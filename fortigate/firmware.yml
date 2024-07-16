@@ -11,6 +11,7 @@
     ansible_httpapi_timeout: 120
     access_token: "w6b4Nqx38bxfdj8Q4p7g331p4ww960"
     firmware_file_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"
+    local_firmware_file_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"
   tasks:
   - name: Display Variables
     debug:
@@ -18,16 +19,7 @@
         vdom: "{{ vdom }}"
         access_token: "{{ access_token }}"
         firmware_file_path: "{{ firmware_file_path }}"
-
-  - name: Print Environment Variables
-    command: env
-    register: env_vars
-    delegate_to: localhost
-
-  - name: Display Environment Variables
-    debug:
-      var: env_vars
-    delegate_to: localhost
+        local_firmware_file_path: "{{ local_firmware_file_path }}"
 
   - name: Print Current Working Directory
     command: pwd
@@ -39,32 +31,33 @@
       var: current_directory
     delegate_to: localhost
 
-  - name: List contents of the directory
-    command: ls -l /tmp/
-    register: directory_contents
+  - name: Ensure local firmware file is present
+    stat:
+      path: "{{ local_firmware_file_path }}"
+    register: local_firmware_file
     delegate_to: localhost
 
-  - name: Display directory contents
-    debug:
-      var: directory_contents
+  - name: Fail if local firmware file is not present
+    fail:
+      msg: "Local firmware file not found at {{ local_firmware_file_path }}"
+    when: not local_firmware_file.stat.exists
+
+  - name: Copy local firmware file to the execution environment
+    copy:
+      src: "{{ local_firmware_file_path }}"
+      dest: "{{ firmware_file_path }}"
     delegate_to: localhost
 
-  - name: Ensure firmware file is present on the controller
+  - name: Ensure firmware file is present in the execution environment
     stat:
       path: "{{ firmware_file_path }}"
     register: firmware_file
     delegate_to: localhost
 
-  - name: Fail if firmware file is not present on the controller
+  - name: Fail if firmware file is not present in the execution environment
     fail:
       msg: "Firmware file not found at {{ firmware_file_path }}"
     when: not firmware_file.stat.exists
-
-  - name: Copy firmware file to target host
-    copy:
-      src: "{{ firmware_file_path }}"
-      dest: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"
-    delegate_to: localhost
 
   - name: Update Firmware
     fortios_monitor:
@@ -73,7 +66,7 @@
       params:
         source: "upload"
         filename: "FGT_40F-v7.4.1.F-build2463-FORTINET.out"
-        file_content: "{{ lookup('file', '/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out') | string | b64encode }}"
+        file_content: "{{ lookup('file', firmware_file_path) | string | b64encode }}"
     register: firmware_update_result
 
   - name: Display Firmware Update Result
