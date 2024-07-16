@@ -10,7 +10,7 @@
     ansible_httpapi_port: 8443
     ansible_httpapi_timeout: 120
     access_token: "w6b4Nqx38bxfdj8Q4p7g331p4ww960"
-    firmware_file_path: "/home/yogesh/FGT_40F-v7.4.1.F-build2463-FORTINET.out"
+    firmware_file_path: "/tmp/FGT_40F-v7.4.1.F-build2463-FORTINET.out"
   tasks:
   - name: Display Variables
     debug:
@@ -19,8 +19,28 @@
         access_token: "{{ access_token }}"
         firmware_file_path: "{{ firmware_file_path }}"
 
+  - name: Print Environment Variables
+    command: env
+    register: env_vars
+    delegate_to: localhost
+
+  - name: Display Environment Variables
+    debug:
+      var: env_vars
+    delegate_to: localhost
+
+  - name: Print Current Working Directory
+    command: pwd
+    register: current_directory
+    delegate_to: localhost
+
+  - name: Display Current Working Directory
+    debug:
+      var: current_directory
+    delegate_to: localhost
+
   - name: List contents of the directory
-    command: ls -l /home/yogesh/
+    command: ls -l /tmp/
     register: directory_contents
     delegate_to: localhost
 
