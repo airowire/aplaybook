@@ -11,6 +11,26 @@
     ansible_httpapi_timeout: 120
     access_token: "w6b4Nqx38bxfdj8Q4p7g331p4ww960"
   tasks:
+  - name: Display Variables
+    debug:
+      msg: 
+        vdom: "{{ vdom }}"
+        access_token: "{{ access_token }}"
+
+  - name: Ensure firmware file is present
+    stat:
+      path: "/home/yogesh/FGT_40F-v7.4.1.F-build2463-FORTINET.out"
+    register: firmware_file
+
+  - name: Fail if firmware file is not present
+    fail:
+      msg: "Firmware file not found at /home/yogesh/FGT_40F-v7.4.1.F-build2463-FORTINET.out"
+    when: not firmware_file.stat.exists
+
+  - name: Check File Content
+    debug:
+      msg: "{{ lookup( 'file', '/home/yogesh/FGT_40F-v7.4.1.F-build2463-FORTINET.out') | string | b64encode }}"
+
   - name: Update Firmware
     fortios_monitor:
       vdom: "{{ vdom }}"
@@ -19,3 +39,8 @@
         source: "upload"
         filename: "FGT_40F-v7.4.1.F-build2463-FORTINET.out"
         file_content: "{{ lookup( 'file', '/home/yogesh/FGT_40F-v7.4.1.F-build2463-FORTINET.out') | string | b64encode }}"
+    register: firmware_update_result
+
+  - name: Display Firmware Update Result
+    debug:
+      var: firmware_update_result
