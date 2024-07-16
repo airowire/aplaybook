@@ -19,6 +19,16 @@
         access_token: "{{ access_token }}"
         firmware_file_path: "{{ firmware_file_path }}"
 
+  - name: List contents of the directory
+    command: ls -l /home/yogesh/
+    register: directory_contents
+    delegate_to: localhost
+
+  - name: Display directory contents
+    debug:
+      var: directory_contents
+    delegate_to: localhost
+
   - name: Ensure firmware file is present on the controller
     stat:
       path: "{{ firmware_file_path }}"
